@@ -1,4 +1,4 @@
 LocalNotifications
 ==================
 
-Local Notifications for haxe/openfl
+Currently only for android
