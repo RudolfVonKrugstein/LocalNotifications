@@ -1,13 +1,13 @@
 package localnotifications;
 
-#if androiod
+#if android
 import openfl.utils.JNI;
 #end
 
 class LocalNotifications {
 #if android
   static public function showNotification(title : String, text : String) {
-    JNI.getStaticMethod("org/haxe/extension/LocalNotifications", "showNotification", "(Ljava/lang/String;Ljava/lang/String;)V")(title,text);
+    JNI.createStaticMethod("org/haxe/extension/LocalNotifications", "showNotification", "(Ljava/lang/String;Ljava/lang/String;)V")(title,text);
   }
 #else
   public function showNotification(title : String, text : String) {

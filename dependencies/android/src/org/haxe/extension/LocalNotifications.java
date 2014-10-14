@@ -9,6 +9,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import android.app.NotificationManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
+
+import android.R;
 
 /* 
 	You can use the Android Extension class in order to hook
@@ -37,24 +43,14 @@ import android.view.View;
 	back to Haxe from Java.
 */
 public class LocalNotifications extends Extension {
-	
-	
-	public static int sampleMethod (int inputValue) {
-		
-		return inputValue * 100;
-		
-	}
-	
-	
+
 	/**
 	 * Called when an activity you launched exits, giving you the requestCode 
 	 * you started it with, the resultCode it returned, and any additional data 
 	 * from it.
 	 */
 	public boolean onActivityResult (int requestCode, int resultCode, Intent data) {
-		
 		return true;
-		
 	}
 	
 	
@@ -62,9 +58,6 @@ public class LocalNotifications extends Extension {
 	 * Called when the activity is starting.
 	 */
 	public void onCreate (Bundle savedInstanceState) {
-		
-		
-		
 	}
 	
 	
@@ -72,9 +65,6 @@ public class LocalNotifications extends Extension {
 	 * Perform any final cleanup before an activity is destroyed.
 	 */
 	public void onDestroy () {
-		
-		
-		
 	}
 	
 	
@@ -83,9 +73,6 @@ public class LocalNotifications extends Extension {
 	 * the background, but has not (yet) been killed.
 	 */
 	public void onPause () {
-		
-		
-		
 	}
 	
 	
@@ -94,9 +81,6 @@ public class LocalNotifications extends Extension {
 	 * re-displayed to the user (the user has navigated back to it).
 	 */
 	public void onRestart () {
-		
-		
-		
 	}
 	
 	
@@ -105,9 +89,6 @@ public class LocalNotifications extends Extension {
 	 * to start interacting with the user.
 	 */
 	public void onResume () {
-		
-		
-		
 	}
 	
 	
@@ -117,9 +98,6 @@ public class LocalNotifications extends Extension {
 	 * user.
 	 */
 	public void onStart () {
-		
-		
-		
 	}
 	
 	
@@ -128,27 +106,31 @@ public class LocalNotifications extends Extension {
 	 * another activity has been resumed and is covering this one. 
 	 */
 	public void onStop () {
-		
-		
-		
 	}
 
     static int notificationId = 0;
     /** Show a local android notification*/
     static public void showNotification(String title, String text) {
-      NotificationManager notificationManager = (NotificationManager)mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+        // prepare intent which is triggered if the
+        // notification is selected
+        Intent intent = new Intent(mainActivity, mainActivity.getClass());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pIntent = PendingIntent.getActivity(mainActivity, 0, intent, 0);
 
-      Intent intent = new Intent(mainActivity, mainActivity.class);
+        int resID = mainActivity.getResources().getIdentifier("icon", "drawable",  mainActivity.getPackageName());
 
-      //use the flag FLAG_UPDATE_CURRENT to override any notification already there
-      PendingIntent contentIntent = PendingIntent.getActivity(mainActivity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // build notification
+        // the addAction re-use the same intent to keep the example short
+        Notification n  = new Notification.Builder(mainActivity)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setSmallIcon(resID)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true).build();
 
-      Notification notification = new Notification(R.drawable.ic_launcher, "Some Text", System.currentTimeMillis());
-      notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND;
+        NotificationManager notificationManager =
+                (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 
-      notification.setLatestEventInfo(this, title, text, contentIntent);
-      notificationManager.notify(++notificationId, notification);
+        notificationManager.notify(notificationId, n);
     }
-	
-	
 }
