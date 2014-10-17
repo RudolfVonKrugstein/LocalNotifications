@@ -14,6 +14,8 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 
+import android.view.Toast;
+
 import android.R;
 
 /* 
@@ -132,5 +134,14 @@ public class LocalNotifications extends Extension {
                 (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(notificationId, n);
+    }
+
+    /** Show a toast on android */
+    static public void showToast(String text, int duration, int gravity) {
+      Context context = mainActivity.getApplicationContext();
+      Toast toast = Toast.makeText(context, text, duration);
+      toast.setGravity(gravity);
+      toast.show();
+
     }
 }
