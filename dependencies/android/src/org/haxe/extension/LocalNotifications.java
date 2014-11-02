@@ -14,7 +14,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 
-import android.view.Toast;
+import android.widget.Toast;
 
 import android.R;
 
@@ -140,7 +140,7 @@ public class LocalNotifications extends Extension {
     static public void showToast(String text, int duration, int gravity) {
       Context context = mainActivity.getApplicationContext();
       Toast toast = Toast.makeText(context, text, duration);
-      toast.setGravity(gravity);
+      toast.setGravity(gravity, 0, 0);
       toast.show();
 
     }
